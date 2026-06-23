@@ -8,7 +8,7 @@ spec:
   serviceAccountName: <ksa-name>  # Replace with your KSA name
   automountServiceAccountToken: false
   containers:
-  - image: gcr.io/google.com/cloudsdktool/cloud-sdk:slim
+  - image: gcr.io/distroless/static:nonroot@sha256:9cd98e70ae7072b83fa4a5752ab2f022960e5b7af7585e83b60899f140ebe003
     name: workload-identity-test
     command: ["sleep", "infinity"]
     resources:
@@ -23,6 +23,8 @@ spec:
       capabilities:
         drop: ["ALL"]
       readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      runAsUser: 65532
   nodeSelector:
     iam.gke.io/gke-metadata-server-enabled: "true"
   securityContext:
