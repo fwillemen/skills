@@ -10,7 +10,9 @@ When a user requests a cost estimation, the agent MUST follow this procedure ste
 > - **DO NOT** write or execute Python scripts or shell scripts *saved on disk* (e.g., `.py` or `.sh` files).
 > - **DO NOT** use command-line text filters like `grep`, `egrep`, `awk`, or `sed` as they are restricted in this environment.
 > - For all text filtering, matching, and counting, you MUST pipe the output to `python3 -c` and process the data stream in-memory.
-> - **PYTHON LIMITATION**: You **CANNOT** use backslashes inside f-string expressions. (e.g. `f"{d[\"key\"]}"` will throw a SyntaxError). Use single quotes for dictionary keys or use standard string concatenation.
+> - **PYTHON LIMITATION**: You **CANNOT** use backslashes inside f-string expressions. Bash will eat the escapes and cause a `SyntaxError`.
+>   - ❌ **BAD**: `print(f"Name: {v[\"name\"]}")`
+>   - ✅ **GOOD**: `print(f"Name: {v['name']}")` OR `print("Name: {}".format(v["name"]))`
 > - **PROJECT ID FORMAT**: Always use the exact Project ID provided by the user (including any dashes like `my-project-id`). Do not modify, strip dashes, or alter the formatting before making API calls.
 
 > - You MUST execute all steps using ONLY direct tool calls (`gcloud`, `curl`, `jq`) and use `python3 -c` or `bc` only as an in-memory calculator. You must manually filter the data and format the final markdown report in your response text.
